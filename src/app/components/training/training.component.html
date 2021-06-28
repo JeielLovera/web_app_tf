@@ -1,0 +1,55 @@
+<section class="background">
+  <app-navbar></app-navbar>
+  <div class="content-container">
+    <mat-card class="mat-elevation-z8">
+      <br/>
+      <mat-card-title>Entrenamiento del KNN</mat-card-title>
+
+      <mat-card-content>
+        <div class="subtitle-card">
+          <h2>Ingrese los parámetros</h2>
+        </div>
+
+        <form [formGroup]="parametersForm">
+          <mat-form-field appearance="outline">
+            <mat-label>Épocas</mat-label>
+            <input matInput placeholder="Ingrese número de épocas"  type="number" [formControl]="parametersForm.controls.epochs">                
+            <mat-error *ngIf="parametersForm.controls.epochs.errors?.required">Este campo es obligatorio</mat-error>
+            <mat-error *ngIf="parametersForm.controls.epochs.errors?.max || parametersForm.controls.epochs.errors?.min">Los valores deben ser entre 1 y 100</mat-error>
+          </mat-form-field>
+          <br/>
+
+          <br/>
+          <mat-form-field appearance="outline">
+            <mat-label>Procesos en paralelo</mat-label>
+            <input matInput placeholder="Ingrese número de procesos en paralelo" type="number" [formControl]="parametersForm.controls.parallelProcs">                
+            <mat-error *ngIf="parametersForm.controls.parallelProcs.errors?.required">Este campo es obligatorio</mat-error>
+            <mat-error *ngIf="parametersForm.controls.parallelProcs.errors?.max || parametersForm.controls.parallelProcs.errors?.min">Los valores deben ser entre 2 y 10</mat-error>
+          </mat-form-field>
+          <br/>
+        </form>
+
+        <button *ngIf="!isTraining" mat-raised-button class="btn-action" color="primary" [disabled]="parametersForm.invalid" (click)="trainingKnn()">
+          <mat-icon>miscellaneous_services</mat-icon>
+          Entrenar
+        </button>
+        <button *ngIf="isTraining" mat-raised-button class="btn-action" color="primary" [disabled]="true">
+          <mat-spinner diameter="25"></mat-spinner>
+        </button>
+
+        <br/>
+        <br/>
+        <div *ngIf="afterTraining" class="result-container" >
+          <div class="subtitle-card">
+            <h2>Resultados</h2>
+          </div>
+          <div class="data-result-container">
+            <p><span>Mejor "K": </span><strong>&nbsp;{{bestK.k}}</strong></p>
+            <p><span>Precisión: </span><strong>&nbsp;{{bestK.accuracy * 100 | number:'2.4'}}%</strong></p>            
+          </div>
+        </div>
+      </mat-card-content> 
+    </mat-card>    
+  </div>
+</section>
+
